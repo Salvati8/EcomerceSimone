@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 @Entity //tutti i db e tabelle sono entity
 @Table (name="carrello")
 public class Carrello {
-
+//dlsjhnxdmhzfzhff
 	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
