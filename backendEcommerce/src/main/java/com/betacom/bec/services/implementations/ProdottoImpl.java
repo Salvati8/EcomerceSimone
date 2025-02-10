@@ -13,6 +13,7 @@ import com.betacom.bec.dto.ProdottoDTO;
 import com.betacom.bec.models.Prodotto;
 import com.betacom.bec.repositories.ProdottoRepository;
 import com.betacom.bec.request.ProdottoReq;
+import com.betacom.bec.services.interfaces.MessaggioServices;
 import com.betacom.bec.services.interfaces.ProdottoServices;
 
 @Service
@@ -24,6 +25,9 @@ public class ProdottoImpl implements ProdottoServices{
 	@Autowired
 	private Logger log;
 	
+	@Autowired
+	private MessaggioServices msgS;
+	
 	@Override
 	public void create(ProdottoReq req) throws Exception {
 		
@@ -33,6 +37,25 @@ public class ProdottoImpl implements ProdottoServices{
 		
 		if(c.isPresent())
 			throw new Exception("Prodotto già presente");
+		
+		if (req.getMarca() == null)
+			throw new Exception(msgS.getMessaggio("no-marca"));
+		if (req.getNome() == null)
+			throw new Exception(msgS.getMessaggio("no-nome"));
+		if (req.getCategoria() == null)
+			throw new Exception(msgS.getMessaggio("no-categoria"));
+		if (req.getDescrizione() == null)
+			throw new Exception(msgS.getMessaggio("no-desc"));
+		if (req.getPrezzo() == null)
+			throw new Exception(msgS.getMessaggio("no-prezzo"));
+		if (req.getQuantitaDisponibile() == null)
+			throw new Exception(msgS.getMessaggio("no-quantita"));
+		if (req.getUrlImg() == null)
+			throw new Exception(msgS.getMessaggio("no-img"));
+		if (req.getSize() == null)
+			throw new Exception(msgS.getMessaggio("no-size"));
+		if (req.getColore() == null)
+			throw new Exception(msgS.getMessaggio("no-colore"));
 		
 		Prodotto prodotto = new Prodotto();
 		
@@ -45,21 +68,53 @@ public class ProdottoImpl implements ProdottoServices{
 		prodotto.setUrlImg(req.getUrlImg());
 		prodotto.setSize(req.getSize());
 		prodotto.setColore(req.getColore());
-		
-      // Salva la Prodotto
+
+      // Salva il prodotto
 		proR.save(prodotto);
 		
 	}
-	 
-	@Override
-    public ProdottoDTO listById(Integer id) {
-        Prodotto prodotto = proR.findById(id).orElse(null);
-        return prodotto != null ? new ProdottoDTO(prodotto) : null;
-    }
 	
+	@Override
+    public void update(ProdottoReq req) throws Exception {
+		log.debug("Update: "+ req);
+        // //controllo se già esiste
+        List<Prodotto> existingProdottos = proR.findAll();
+        boolean nameExists = existingProdottos.stream().anyMatch(s ->
+                s.getNome().equalsIgnoreCase(req.getNome()) &&
+                !s.getId().equals(req.getId()));
+
+        if (nameExists) {
+            throw new Exception(msgS.getMessaggio("find-prodotto"));
+        }
+
+        Optional<Prodotto> optProdotto = proR.findById(req.getId());
+        if (optProdotto.isEmpty()) {
+            throw new Exception(msgS.getMessaggio("no-prodotto"));
+        }
+
+        Prodotto p = optProdotto.get();
+        p.setPrezzo(req.getPrezzo());
+        p.setQuantitaDisponibile(req.getQuantitaDisponibile());
+
+        proR.save(p);
+    }
+
 	@Override
 	public List<ProdottoDTO> listByCategoria(String categoria) {
 	    List<Prodotto> prodotti = proR.findByCategoria(categoria);
 	    return prodotti.stream().map(ProdottoDTO::new).collect(Collectors.toList());
 	}
+	
+	@Override
+	public void removeProdotto(ProdottoReq req) throws Exception {
+		Optional<Prodotto> pr = proR.findById(req.getId());
+		if (pr.isEmpty())
+			throw new Exception(msgS.getMessaggio("no-prodotto"));
+		
+//		if (!pr.get().getAttivitas().isEmpty())
+//			throw new Exception("Abbonamento con attività. Cancella attività prima");
+		
+		proR.delete(pr.get());
+		
+	} 
 }

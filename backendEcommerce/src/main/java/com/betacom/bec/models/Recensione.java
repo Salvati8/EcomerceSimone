@@ -2,7 +2,8 @@ package com.betacom.bec.models;
 
 import java.sql.Timestamp;
 
-import jakarta.persistence.CascadeType;
+
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,12 +11,11 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity //tutti i db e tabelle sono entity
-@Table (name="carrello")
-public class Carrello {
+@Table (name="recensioni")
+public class Recensione {
 
 	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
@@ -23,17 +23,22 @@ public class Carrello {
 	
 	@Column(length=100,
     		nullable=false)
-	private Integer quantita;
+	private Integer valutazione;
 	
 	@Column(length=100,
     		nullable=false)
-	private Double prezzo;
+	private String commento;
 	
-	@OneToOne(mappedBy = "carrello",  //riferito all'attributo che in certificato
-	  		  cascade = CascadeType.REMOVE)
-	private Utente utente;
+	@Column(name="data_recensione",
+			length=100,
+    		nullable=false)
+	private Timestamp dataRecensione;
 	
 	@ManyToOne
+    @JoinColumn(name = "id_utente")
+    private Utente utente;
+
+    @ManyToOne
     @JoinColumn(name = "id_prodotto")
     private Prodotto prodotto;
 
@@ -45,20 +50,28 @@ public class Carrello {
 		this.id = id;
 	}
 
-	public Integer getQuantita() {
-		return quantita;
+	public Integer getValutazione() {
+		return valutazione;
 	}
 
-	public void setQuantita(Integer quantita) {
-		this.quantita = quantita;
+	public void setValutazione(Integer valutazione) {
+		this.valutazione = valutazione;
 	}
 
-	public Double getPrezzo() {
-		return prezzo;
+	public String getCommento() {
+		return commento;
 	}
 
-	public void setPrezzo(Double prezzo) {
-		this.prezzo = prezzo;
+	public void setCommento(String commento) {
+		this.commento = commento;
+	}
+
+	public Timestamp getDataRecensione() {
+		return dataRecensione;
+	}
+
+	public void setDataRecensione(Timestamp dataRecensione) {
+		this.dataRecensione = dataRecensione;
 	}
 
 	public Utente getUtente() {
@@ -76,8 +89,7 @@ public class Carrello {
 	public void setProdotto(Prodotto prodotto) {
 		this.prodotto = prodotto;
 	}
-	
-	
+    
+    
 
-	
 }

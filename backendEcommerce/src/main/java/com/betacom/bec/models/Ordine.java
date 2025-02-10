@@ -16,10 +16,7 @@ import jakarta.persistence.Table;
 @Entity //tutti i db e tabelle sono entity
 @Table (name="ordini")
 public class Ordine {
-//nfmgnfbhuhdkfnxhmdh
-	//cgnxknkvj
-	//znjhmhjAKDja
-	//cnxkmszmkj
+
 	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;
