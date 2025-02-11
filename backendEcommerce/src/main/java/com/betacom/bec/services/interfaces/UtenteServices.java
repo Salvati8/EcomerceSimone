@@ -16,4 +16,6 @@ public interface UtenteServices {
 	void update(UtenteReq req);
 
 	void remove(UtenteReq req);
+
+	void delete(String nomeUtente) throws Exception;
 }

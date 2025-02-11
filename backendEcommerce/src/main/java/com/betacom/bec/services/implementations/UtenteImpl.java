@@ -123,5 +123,30 @@ public class UtenteImpl implements UtenteServices{
 		
 	}
 	
+	@Override
+	public void delete(String nomeUtente) throws Exception {
+	    System.out.println("Delete : " + nomeUtente);
+	    
+	    Optional<Utente> utenteOpt = utR.findByNome(nomeUtente.trim());
+	    
+	    if (!utenteOpt.isPresent()) {
+	        throw new Exception(msgS.getMessaggio("utente-non-trovato"));
+	    }
+	    
+	    Utente utente = utenteOpt.get();
+	    
+	    // Trova il carrello associato
+	    Optional<Carrello> carrelloOpt = caR.findByUtente(utente);
+	    
+	    // Se il carrello esiste, lo elimina
+	    carrelloOpt.ifPresent(carrello -> caR.delete(carrello));
+	    
+	    // Elimina l'utente
+	    utR.delete(utente);
+	    
+	    System.out.println("Utente e carrello eliminati con successo");
+	}
+
+	
 	
 }

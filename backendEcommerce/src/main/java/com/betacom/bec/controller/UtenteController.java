@@ -1,6 +1,8 @@
 package com.betacom.bec.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -88,4 +90,14 @@ public class UtenteController {
 		}
 		return r;
 	}
+	
+	 @PostMapping("/{nomeUtente}")
+	    public ResponseEntity<String> deleteUtente(@PathVariable String nomeUtente) {
+	        try {
+	            utenteS.delete(nomeUtente);
+	            return ResponseEntity.ok("Utente e carrello eliminati con successo");
+	        } catch (Exception e) {
+	            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+	        }
+	    }
 }
