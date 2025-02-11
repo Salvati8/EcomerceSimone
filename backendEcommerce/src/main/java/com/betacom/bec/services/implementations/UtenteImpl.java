@@ -6,23 +6,12 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
-import com.betacom.bec.dto.CarrelloDTO;
-import com.betacom.bec.dto.ProdottoDTO;
 import com.betacom.bec.dto.UtenteDTO;
 import com.betacom.bec.models.Carrello;
-import com.betacom.bec.models.Prodotto;
 import com.betacom.bec.models.Utente;
 import com.betacom.bec.repositories.CarrelloRepository;
 import com.betacom.bec.repositories.UtenteRepository;
-import com.betacom.bec.request.ProdottoReq;
 import com.betacom.bec.request.UtenteReq;
 import com.betacom.bec.services.interfaces.MessaggioServices;
 import com.betacom.bec.services.interfaces.UtenteServices;
@@ -47,7 +36,7 @@ public class UtenteImpl implements UtenteServices{
 	private MessaggioServices msgS;
 	
 	@Override
-    public List<UtenteDTO> listAll() {
+    public List<UtenteDTO> list() {
         List<Utente> utenti = utR.findAll();
 
         return utenti.stream().map(u -> new UtenteDTO(
@@ -57,10 +46,14 @@ public class UtenteImpl implements UtenteServices{
                 u.getEmail(),
                 u.getPsw(),
                 u.getRuolo().toString(), 
+                u.getNumeroTelefono(),
+                u.getIndirizzoDiFatturazione(),
+                u.getIndirizzoDiSpedizione(),
                 buildOrdineDTO(u.getOrdini()),
                 buildRecensioneDTO(u.getRecensioni())
         )).collect(Collectors.toList());
     }
+	
 	
 	@Override
 	public void create(UtenteReq req) throws Exception {
@@ -116,62 +109,57 @@ public class UtenteImpl implements UtenteServices{
 	    caR.save(carrello);
 		
 	}
-
 	
 	
 	@Override
-	public void delete(String nomeUtente) throws Exception {
-	    System.out.println("Delete : " + nomeUtente);
+	public void update(UtenteReq req) throws Exception {
+		Optional<Utente> u = utR.findById(req.getId());
+		if (u.isEmpty())
+			throw new Exception("Username inesistente");
+		if (req.getId() != null)
+			u.get().setId(req.getId());
+		if (req.getCognome() != null)
+			u.get().setCognome(req.getCognome());
+		if (req.getEmail() != null)
+			u.get().setEmail(req.getEmail());
+		if (req.getPassword() != null)
+			u.get().setPsw(req.getPassword());		
+		if (req.getRuolo() != null)
+			u.get().setRuolo(Roles.valueOf(req.getRuolo()));
+		if (req.getNumeroTelefono() != null)
+			u.get().setNumeroTelefono(req.getNumeroTelefono());
+		if (req.getIndirizzoDiSpedizione() != null)
+			u.get().setIndirizzoDiSpedizione(req.getIndirizzoDiSpedizione());
+		if (req.getIndirizzoDiFatturazione() != null)
+			u.get().setIndirizzoDiFatturazione(req.getIndirizzoDiFatturazione());
+		
+		utR.save(u.get());
+		
+	}
+
+	@Override
+	public void remove(UtenteReq req) throws Exception {
+	    Optional<Utente> u = utR.findById(req.getId());
 	    
-	    Optional<Utente> utenteOpt = utR.findByNome(nomeUtente.trim());
-	    
-	    if (!utenteOpt.isPresent()) {
-	        throw new Exception(msgS.getMessaggio("utente-non-trovato"));
+	    if (u.isEmpty()) {
+	        throw new Exception("Username inesistente");
 	    }
 	    
-	    Utente utente = utenteOpt.get();
+	    Utente utente = u.get();
 	    
-	    // Trova il carrello associato
+	    // Elimina il carrello associato all'utente, se esiste
 	    Optional<Carrello> carrelloOpt = caR.findByUtente(utente);
-	    
-	    // Se il carrello esiste, lo elimina
-	    carrelloOpt.ifPresent(carrello -> caR.delete(carrello));
-	    
+	    carrelloOpt.ifPresent(caR::delete);
+
 	    // Elimina l'utente
 	    utR.delete(utente);
 	    
 	    System.out.println("Utente e carrello eliminati con successo");
 	}
 
-	@Override
-    public void update(String nomeUtente, UtenteReq req, String ruoloRichiedente) throws Exception {
-        System.out.println("Update : " + nomeUtente);
-        
-        Optional<Utente> utenteOpt = utR.findByNome(nomeUtente.trim());
-        
-        if (!utenteOpt.isPresent()) {
-            throw new Exception(msgS.getMessaggio("utente-non-trovato"));
-        }
-        
-        Utente utente = utenteOpt.get();
-        
-        // Aggiorna i campi modificabili
-        utente.setNome(req.getNome());
-        utente.setCognome(req.getCognome());
-        utente.setEmail(req.getEmail());
-        utente.setPsw(req.getPassword());
-        utente.setNumeroTelefono(req.getNumeroTelefono());
-        utente.setIndirizzoDiSpedizione(req.getIndirizzoDiSpedizione());
-        utente.setIndirizzoDiFatturazione(req.getIndirizzoDiFatturazione());
-        
-        // Controllo sul ruolo: solo un admin può modificarlo
-        if (Roles.ADMIN.toString().equals(ruoloRichiedente)) {
-            utente.setRuolo(Roles.valueOf(req.getRuolo()));
-        }
-        
-        utR.save(utente);
-        System.out.println("Utente aggiornato con successo");
-    }
+
+
+	
 	
 	
 }
