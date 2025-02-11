@@ -6,7 +6,13 @@ import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.betacom.bec.dto.CarrelloDTO;
 import com.betacom.bec.dto.ProdottoDTO;
@@ -112,12 +118,6 @@ public class UtenteImpl implements UtenteServices{
 	}
 
 	@Override
-	public void update(UtenteReq req) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void remove(UtenteReq req) {
 		// TODO Auto-generated method stub
 		
@@ -147,6 +147,35 @@ public class UtenteImpl implements UtenteServices{
 	    System.out.println("Utente e carrello eliminati con successo");
 	}
 
+	@Override
+    public void update(String nomeUtente, UtenteReq req, String ruoloRichiedente) throws Exception {
+        System.out.println("Update : " + nomeUtente);
+        
+        Optional<Utente> utenteOpt = utR.findByNome(nomeUtente.trim());
+        
+        if (!utenteOpt.isPresent()) {
+            throw new Exception(msgS.getMessaggio("utente-non-trovato"));
+        }
+        
+        Utente utente = utenteOpt.get();
+        
+        // Aggiorna i campi modificabili
+        utente.setNome(req.getNome());
+        utente.setCognome(req.getCognome());
+        utente.setEmail(req.getEmail());
+        utente.setPsw(req.getPassword());
+        utente.setNumeroTelefono(req.getNumeroTelefono());
+        utente.setIndirizzoDiSpedizione(req.getIndirizzoDiSpedizione());
+        utente.setIndirizzoDiFatturazione(req.getIndirizzoDiFatturazione());
+        
+        // Controllo sul ruolo: solo un admin può modificarlo
+        if (Roles.ADMIN.toString().equals(ruoloRichiedente)) {
+            utente.setRuolo(Roles.valueOf(req.getRuolo()));
+        }
+        
+        utR.save(utente);
+        System.out.println("Utente aggiornato con successo");
+    }
 	
 	
 }

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.bec.services.interfaces.ProdottoServices;
@@ -61,19 +62,15 @@ public class UtenteController {
 		return r;
 	}
 	
-	@PostMapping("/update")
-	public ResponseBase update(@RequestBody (required = true) UtenteReq req) {
-		log.debug("update: " + req);
-		ResponseBase r = new ResponseBase();
-		r.setRc(true);
-		try {			
-			utenteS.update(req);
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			r.setRc(false);
-		}
-		return r;
-	}
+	@PostMapping("/{nomeUtente}")
+    public ResponseEntity<String> updateUtente(@PathVariable String nomeUtente, @RequestBody UtenteReq req, @RequestParam String ruoloRichiedente) {
+        try {
+            utenteS.update(nomeUtente, req, ruoloRichiedente);
+            return ResponseEntity.ok("Utente aggiornato con successo");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        }
+    }
 
 
 	
