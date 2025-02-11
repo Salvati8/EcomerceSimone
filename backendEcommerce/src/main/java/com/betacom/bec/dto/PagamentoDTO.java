@@ -10,7 +10,7 @@ public class PagamentoDTO {
     private Double importo;
     private Timestamp dataPagamento;
     
-	public PagamentoDTO(Integer id, String metodoDiPagamento, String statoPagamento, Double importo,
+	public PagamentoDTO(Integer id,  String metodoDiPagamento, String statoPagamento, Double importo,
 			Timestamp dataPagamento) {
 		super();
 		this.id = id;
@@ -26,7 +26,7 @@ public class PagamentoDTO {
 
 	@Override
 	public String toString() {
-		return "PagamentoDTO [id=" + id + ", metodoDiPagamento=" + metodoDiPagamento
+		return "PagamentoDTO [id=" + id  + ", metodoDiPagamento=" + metodoDiPagamento
 				+ ", statoPagamento=" + statoPagamento + ", importo=" + importo + ", dataPagamento=" + dataPagamento
 				+ "]";
 	}

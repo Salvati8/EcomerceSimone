@@ -8,16 +8,19 @@ public class OrdineReq {
     private Double prezzoTotale;
     private String indirizzoDiSpedizione;
     private Integer cap;
+    private Integer idProdotto;
     private Timestamp dataOrdine;
     private Integer quantità;
     private String stato;
     
-	public OrdineReq(Integer id, Double prezzoTotale, String indirizzoDiSpedizione, Integer cap, Timestamp dataOrdine, Integer quantità, String stato) {
+	public OrdineReq(Integer id, Double prezzoTotale, String indirizzoDiSpedizione, Integer cap,
+			Integer idProdotto, Timestamp dataOrdine, Integer quantità, String stato) {
 		super();
 		this.id = id;
 		this.prezzoTotale = prezzoTotale;
 		this.indirizzoDiSpedizione = indirizzoDiSpedizione;
 		this.cap = cap;
+		this.idProdotto = idProdotto;
 		this.dataOrdine = dataOrdine;
 		this.quantità = quantità;
 		this.stato = stato;
@@ -30,7 +33,8 @@ public class OrdineReq {
 	@Override
 	public String toString() {
 		return "OrdineReq [id=" + id + ", prezzoTotale=" + prezzoTotale
-				+ ", indirizzoDiSpedizione=" + indirizzoDiSpedizione + ", cap=" + cap + ", dataOrdine=" + dataOrdine + ", quantità=" + quantità + ", stato=" + stato + "]";
+				+ ", indirizzoDiSpedizione=" + indirizzoDiSpedizione + ", cap=" + cap + ", idProdotto=" + idProdotto
+				+ ", dataOrdine=" + dataOrdine + ", quantità=" + quantità + ", stato=" + stato + "]";
 	}
 
 	public Integer getId() {
@@ -63,6 +67,14 @@ public class OrdineReq {
 
 	public void setCap(Integer cap) {
 		this.cap = cap;
+	}
+
+	public Integer getIdProdotto() {
+		return idProdotto;
+	}
+
+	public void setIdProdotto(Integer idProdotto) {
+		this.idProdotto = idProdotto;
 	}
 
 	public Timestamp getDataOrdine() {

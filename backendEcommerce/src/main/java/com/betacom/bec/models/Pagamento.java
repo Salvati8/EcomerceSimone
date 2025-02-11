@@ -14,7 +14,7 @@ import jakarta.persistence.Table;
 @Entity //tutti i db e tabelle sono entity
 @Table (name="pagamenti")
 public class Pagamento {
-	//dgsgdgg
+	
 	@Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
 	private Integer id;

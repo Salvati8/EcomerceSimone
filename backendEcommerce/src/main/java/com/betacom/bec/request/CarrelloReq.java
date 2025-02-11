@@ -23,7 +23,7 @@ public class CarrelloReq {
 
 	@Override
 	public String toString() {
-		return "CarrelloReq [id=" + id + ", dataCreazione=" + ", idProdotto="
+		return "CarrelloReq [id=" + id  + ", idProdotto="
 				+ idProdotto + ", quantita=" + quantita + ", prezzo=" + prezzo + "]";
 	}
 

@@ -1,41 +1,55 @@
 package com.betacom.bec.dto;
 
-import java.sql.Timestamp;
+import java.util.List;
 
-
+import com.betacom.bec.models.CarrelloProdotto;
+import com.betacom.bec.models.Prodotto;
+import com.betacom.bec.models.Utente;
 
 public class CarrelloDTO {
 
 	private Integer id;
-    private Integer idProdotto;
     private Integer quantita;
     private Double prezzo;
-    private UtenteDTO utente;
+    //private UtenteDTO utente;
+    private List<CarrelloProdottoDTO> carrelloProdottiDTO;
     
-	public CarrelloDTO(Integer id, Integer idProdotto, Integer quantita, Double prezzo, UtenteDTO utente) {
+
+
+	public CarrelloDTO(Integer id, Integer quantita, Double prezzo, UtenteDTO utente,
+			List<CarrelloProdottoDTO> carrelloProdottiDTO) {
 		super();
 		this.id = id;
-		this.idProdotto = idProdotto;
 		this.quantita = quantita;
 		this.prezzo = prezzo;
-		this.utente = utente;
+		//this.utente = utente;
+		this.carrelloProdottiDTO = carrelloProdottiDTO;
 	}
 
-	public CarrelloDTO() {
-		super();
-	}
 
-	public CarrelloDTO(Integer id) {
+
+	public CarrelloDTO(Integer id, Integer quantita, Double prezzo,
+			List<CarrelloProdottoDTO> carrelloProdottiDTO) {
 		super();
 		this.id = id;
-		
+		this.quantita = quantita;
+		this.prezzo = prezzo;
+
+		this.carrelloProdottiDTO = carrelloProdottiDTO;
 	}
+
+
+
+
+
 
 	@Override
 	public String toString() {
-		return "CarrelloDTO [id=" + id + ", dataCreazione=" +  ", idProdotto="
-				+ idProdotto + ", quantita=" + quantita + ", prezzo=" + prezzo + ", utente=" + utente + "]";
+		return "CarrelloDTO [id=" + id + ", quantita=" + quantita + ", prezzo=" + prezzo + ", carrelloProdottiDTO="
+				+ carrelloProdottiDTO + "]";
 	}
+
+
 
 	public Integer getId() {
 		return id;
@@ -45,13 +59,6 @@ public class CarrelloDTO {
 		this.id = id;
 	}
 
-	public Integer getIdProdotto() {
-		return idProdotto;
-	}
-
-	public void setIdProdotto(Integer idProdotto) {
-		this.idProdotto = idProdotto;
-	}
 
 	public Integer getQuantita() {
 		return quantita;
@@ -69,16 +76,28 @@ public class CarrelloDTO {
 		this.prezzo = prezzo;
 	}
 
-	public UtenteDTO getUtente() {
-		return utente;
+//	public UtenteDTO getUtente() {
+//		return utente;
+//	}
+//
+//	public void setUtente(UtenteDTO utente) {
+//		this.utente = utente;
+//	}
+
+
+
+	public List<CarrelloProdottoDTO> getCarrelloProdotti() {
+		return carrelloProdottiDTO;
 	}
 
-	public void setUtente(UtenteDTO utente) {
-		this.utente = utente;
+
+
+	public void setCarrelloProdotti(List<CarrelloProdottoDTO> carrelloProdotti) {
+		this.carrelloProdottiDTO = carrelloProdotti;
 	}
-    
-	
-    
-    
+
+
+
+ 
 
 }

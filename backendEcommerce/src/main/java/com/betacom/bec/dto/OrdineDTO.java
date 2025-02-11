@@ -5,14 +5,15 @@ import java.sql.Timestamp;
 public class OrdineDTO {
 
 	private Integer id;
-    private Double prezzoTotale;
-    private String indirizzoDiSpedizione;
-    private Integer cap;
-   private Timestamp dataOrdine;
-    private Integer quantità;
-    private String stato;
-    
-	public OrdineDTO(Integer id, Double prezzoTotale, String indirizzoDiSpedizione, Integer cap, Timestamp dataOrdine, Integer quantità, String stato) {
+	private Double prezzoTotale;
+	private String indirizzoDiSpedizione;
+	private Integer cap;
+	private Timestamp dataOrdine;
+	private Integer quantità;
+	private String stato;
+
+	public OrdineDTO(Integer id, Double prezzoTotale, String indirizzoDiSpedizione, Integer cap, Timestamp dataOrdine,
+			Integer quantità, String stato) {
 		super();
 		this.id = id;
 		this.prezzoTotale = prezzoTotale;
@@ -29,8 +30,9 @@ public class OrdineDTO {
 
 	@Override
 	public String toString() {
-		return "OrdineDTO [id=" + id + ", prezzoTotale=" + prezzoTotale
-				+ ", indirizzoDiSpedizione=" + indirizzoDiSpedizione + ", cap=" + cap + ", dataOrdine=" + dataOrdine + ", quantità=" + quantità + ", stato=" + stato + "]";
+		return "OrdineDTO [id=" + id + ", prezzoTotale=" + prezzoTotale + ", indirizzoDiSpedizione="
+				+ indirizzoDiSpedizione + ", cap=" + cap + ", dataOrdine=" + dataOrdine + ", quantità=" + quantità
+				+ ", stato=" + stato + "]";
 	}
 
 	public Integer getId() {
@@ -89,6 +91,4 @@ public class OrdineDTO {
 		this.stato = stato;
 	}
 
-	
-    
 }

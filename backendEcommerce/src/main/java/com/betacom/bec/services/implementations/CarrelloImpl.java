@@ -1,131 +1,135 @@
 package com.betacom.bec.services.implementations;
+import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.betacom.bec.dto.CarrelloDTO;
+import com.betacom.bec.dto.CarrelloProdottoDTO;
+import com.betacom.bec.dto.UtenteDTO;
 import com.betacom.bec.models.Carrello;
+import com.betacom.bec.models.CarrelloProdotto;
 import com.betacom.bec.models.Prodotto;
-import com.betacom.bec.models.Utente;
+import com.betacom.bec.repositories.CarrelloProdottoRepository;
 import com.betacom.bec.repositories.CarrelloRepository;
 import com.betacom.bec.repositories.ProdottoRepository;
-import com.betacom.bec.repositories.UtenteRepository;
 import com.betacom.bec.services.interfaces.CarrelloServices;
+
+import static com.betacom.bec.utils.Utilities.buildCarrelloProdottoDTO;
 
 @Service
 public class CarrelloImpl implements CarrelloServices{
 
 	@Autowired
-	CarrelloRepository carR;
+    private CarrelloRepository carrelloRepository;
 	
 	@Autowired
     private ProdottoRepository prodottoRepository;
+	
+    
     @Autowired
-    private UtenteRepository utenteRepository;
+    private CarrelloProdottoRepository carrelloProdottoRepository;
 	
 	@Autowired
 	Logger log;
 	
 	@Override
-	public Carrello aggiungiProdotto(int utenteId, int prodottoId, int quantita) {
-	    // Trova l'utente
-	    Utente utente = utenteRepository.findById(utenteId)
-	            .orElseThrow(() -> new RuntimeException("Utente non trovato"));
-	    
-	    // Trova il prodotto
-	    Prodotto prodotto = prodottoRepository.findById(prodottoId)
-	            .orElseThrow(() -> new RuntimeException("Prodotto non trovato"));
+	public Carrello aggiungiProdottoAlCarrello(Integer utenteId, Integer prodottoId, Integer quantita) {
+	    Optional<Carrello> carrelloOptional = carrelloRepository.findByUtenteId(utenteId);
+	    Optional<Prodotto> prodottoOptional = prodottoRepository.findById(prodottoId);
 
-	    // Verifica che la quantità sia valida
-	    if (quantita <= 0) {
-	        throw new RuntimeException("La quantità deve essere maggiore di zero.");
+	    if (!carrelloOptional.isPresent()) {
+	        throw new RuntimeException("Carrello non trovato per l'utente " + utenteId);
+	    }
+	    if (!prodottoOptional.isPresent()) {
+	        throw new RuntimeException("Prodotto con ID " + prodottoId + " non trovato.");
 	    }
 
-	    // Crea il nuovo carrello
-	    Carrello nuovoCarrello = new Carrello();
-	    nuovoCarrello.setUtente(utente);
-	    nuovoCarrello.setProdotto(prodotto);
-	    nuovoCarrello.setQuantita(quantita);
-	    
-	    // Imposta il prezzo direttamente dal prodotto
-	    nuovoCarrello.setPrezzo(prodotto.getPrezzo() * quantita);
+	    Carrello carrello = carrelloOptional.get();
+	    Prodotto prodotto = prodottoOptional.get();
 
-	    // Salva il nuovo carrello
-	    return carR.save(nuovoCarrello);
+	    if (carrello.getCarrelloProdotti() == null) {
+	        carrello.setCarrelloProdotti(new ArrayList<>());
+	    }
+
+	    Optional<CarrelloProdotto> optionalCarrelloProdotto = carrelloProdottoRepository.findByCarrelloAndProdotto(carrello, prodotto);
+	    CarrelloProdotto carrelloProdotto = optionalCarrelloProdotto.orElseGet(() -> {
+	        CarrelloProdotto nuovoCarrelloProdotto = new CarrelloProdotto();
+	        nuovoCarrelloProdotto.setCarrello(carrello);
+	        nuovoCarrelloProdotto.setProdotto(prodotto);
+	        nuovoCarrelloProdotto.setQuantita(0);
+	        carrello.getCarrelloProdotti().add(nuovoCarrelloProdotto);
+	        return nuovoCarrelloProdotto;
+	    });
+
+	    carrelloProdotto.setQuantita(carrelloProdotto.getQuantita() + quantita);
+	    carrelloProdottoRepository.save(carrelloProdotto);
+
+	    // AGGIORNAMENTO AUTOMATICO DEL CARRELLO
+	    carrello.aggiornaTotali();
+	    return carrelloRepository.save(carrello);
+	}
+    
+
+	@Override
+	public Carrello rimuoviProdotto(Integer utenteId, Integer prodottoId, Integer quantitaDaRimuovere) {
+	    Optional<Carrello> carrelloOptional = carrelloRepository.findByUtenteId(utenteId);
+	    Optional<Prodotto> prodottoOptional = prodottoRepository.findById(prodottoId);
+
+	    if (!carrelloOptional.isPresent()) {
+	        throw new RuntimeException("Carrello non trovato per l'utente " + utenteId);
+	    }
+	    if (!prodottoOptional.isPresent()) {
+	        throw new RuntimeException("Prodotto con ID " + prodottoId + " non trovato.");
+	    }
+
+	    Carrello carrello = carrelloOptional.get();
+	    Prodotto prodotto = prodottoOptional.get();
+
+	    Optional<CarrelloProdotto> carrelloProdottoOptional = carrelloProdottoRepository.findByCarrelloAndProdotto(carrello, prodotto);
+
+	    if (!carrelloProdottoOptional.isPresent()) {
+	        throw new RuntimeException("Prodotto non presente nel carrello.");
+	    }
+
+	    CarrelloProdotto carrelloProdotto = carrelloProdottoOptional.get();
+	    
+	    // RIDUCE LA QUANTITÀ DEL PRODOTTO
+	    int nuovaQuantita = carrelloProdotto.getQuantita() - quantitaDaRimuovere;
+
+	    if (nuovaQuantita > 0) {
+	        carrelloProdotto.setQuantita(nuovaQuantita);
+	        carrelloProdottoRepository.save(carrelloProdotto);
+	    } else {
+	        // SE LA QUANTITÀ SCENDE A 0, RIMUOVE IL PRODOTTO DAL CARRELLO
+	        carrelloProdottoRepository.delete(carrelloProdotto);
+	    }
+
+	    // AGGIORNA AUTOMATICAMENTE I TOTALI DEL CARRELLO USANDO LE QUERY
+	    Integer nuovaQuantitaTotale = carrelloRepository.getQuantitaTotale(carrello.getId());
+	    Double nuovoPrezzoTotale = carrelloRepository.getPrezzoTotale(carrello.getId());
+
+	    carrello.setQuantita(nuovaQuantitaTotale != null ? nuovaQuantitaTotale : 0);
+	    carrello.setPrezzo(nuovoPrezzoTotale != null ? nuovoPrezzoTotale : 0.0);
+
+	    return carrelloRepository.save(carrello);
 	}
 
 
-
 	@Override
-	public Carrello aggiornaPrezziCarrello(int utenteId) {
-	    List<Carrello> carrelloUtente = carR.findByUtenteId(utenteId);
-	    
-	    double totaleCarrello = 0;
-	    
-	    for (Carrello carrello : carrelloUtente) {
-	        double prezzoTotaleProdotto = carrello.getProdotto().getPrezzo() * carrello.getQuantita();
-	        carrello.setPrezzo(prezzoTotaleProdotto);
-	        totaleCarrello += prezzoTotaleProdotto; // Somma il prezzo totale
-	    }
-
-	    // Aggiorna e restituisci il carrello con i prezzi aggiornati
-	    carR.saveAll(carrelloUtente);
-	    return carrelloUtente.isEmpty() ? null : carrelloUtente.get(0);  // Restituisci il primo carrello (o gestisci come preferisci)
+	public List<CarrelloDTO> ottieniCarrello(int utenteId) {
+		List<Carrello> lU = carrelloRepository.findAll();
+		return lU.stream()
+				.map(u -> new CarrelloDTO(u.getId(),
+						u.getQuantita(),
+						u.getPrezzo(),
+						buildCarrelloProdottoDTO(u.getCarrelloProdotti())))
+				.collect(Collectors.toList());
 	}
-
-	@Override
-	public double calcolaTotaleCarrello(int utenteId) {
-	    List<Carrello> carrelloUtente = carR.findByUtenteId(utenteId);
-	    
-	    double totaleCarrello = 0;
-	    for (Carrello carrello : carrelloUtente) {
-	        totaleCarrello += carrello.getPrezzo();
-	    }
-
-	    return totaleCarrello;
-	}
-	
-	
-
-	@Override
-    public void rimuoviProdotto(int carrelloId) {
-    	carR.deleteById(carrelloId);
-    }
-
-	@Override
-	public Carrello aggiornaQuantita(int carrelloId, int quantita) {
-	    // Trova l'elemento nel carrello
-	    Carrello carrello = carR.findById(carrelloId)
-	            .orElseThrow(() -> new RuntimeException("Elemento nel carrello non trovato"));
-
-	    // Trova il prodotto associato al carrello
-	    Prodotto prodotto = carrello.getProdotto();
-
-	    // Verifica che ci sia sufficiente quantità del prodotto
-	    if (prodotto.getQuantitaDisponibile() < quantita) {
-	        throw new RuntimeException("Quantità richiesta non disponibile");
-	    }
-
-	    // Aggiorna la quantità del prodotto nel carrello
-	    carrello.setQuantita(quantita);
-	    carR.save(carrello); // Salva l'aggiornamento del carrello
-
-	    // Aggiorna la quantità del prodotto nel database
-	    prodotto.setQuantitaDisponibile(prodotto.getQuantitaDisponibile() - quantita);
-	    prodottoRepository.save(prodotto); // Salva l'aggiornamento del prodotto
-
-	    return carrello;
-	}
-
-
-    @Override
-    public List<Carrello> ottieniCarrello(int utenteId) {
-        return carR.findByUtenteId(utenteId);
-    }
-	
-	
-	
+ 
 	
 }

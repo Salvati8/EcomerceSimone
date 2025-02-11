@@ -1,6 +1,4 @@
 package com.betacom.bec.dto;
-
-
 import java.util.List;
 
 import com.betacom.bec.models.Prodotto;
@@ -23,9 +21,11 @@ public class ProdottoDTO {
     private List<OrdineDTO> ordini;
     private List<RecensioneDTO> recensioni;
     
+
+
 	public ProdottoDTO(Integer id, String marca, String nome, String categoria, String descrizione, Double prezzo,
-			Integer quantitaDisponibile, String urlImg, String size, String colore,
-			List<CarrelloDTO> carrelli, List<OrdineDTO> ordini, List<RecensioneDTO> recensioni) {
+			Integer quantitaDisponibile, String urlImg, String size, String colore, List<CarrelloDTO> carrelli,
+			List<OrdineDTO> ordini, List<RecensioneDTO> recensioni) {
 		super();
 		this.id = id;
 		this.marca = marca;
@@ -42,11 +42,13 @@ public class ProdottoDTO {
 		this.recensioni = recensioni;
 	}
 
+
 	public ProdottoDTO() {
 		super();
 	}
 
-	public ProdottoDTO(Prodotto prodotto) {
+	   
+    public ProdottoDTO(Prodotto prodotto) {
         this.id = prodotto.getId();
         this.nome = prodotto.getNome();
         this.descrizione = prodotto.getDescrizione();
@@ -54,27 +56,16 @@ public class ProdottoDTO {
         this.categoria = prodotto.getCategoria();
     }
 
-	public ProdottoDTO(Integer id, String marca, String nome, String categoria, String descrizione, Double prezzo,
-			Integer quantitaDisponibile, String urlImg, String size, String colore) {
-		super();
-		this.id = id;
-		this.marca = marca;
-		this.nome = nome;
-		this.categoria = categoria;
-		this.descrizione = descrizione;
-		this.prezzo = prezzo;
-		this.quantitaDisponibile = quantitaDisponibile;
-		this.urlImg = urlImg;
-		this.size = size;
-		this.colore = colore;
-	}
+
 
 	@Override
 	public String toString() {
 		return "ProdottoDTO [id=" + id + ", marca=" + marca + ", nome=" + nome + ", categoria=" + categoria
-				+ ", descrizione=" + descrizione + ", prezzo=" + prezzo + ", quantitàDisponibile=" + quantitaDisponibile
-				+ ", urlImg=" + urlImg + ", size=" + size + ", colore=" + colore + ", carrelli=" + carrelli + ", ordini=" + ordini + ", recensioni=" + recensioni + "]";
+				+ ", descrizione=" + descrizione + ", prezzo=" + prezzo + ", quantitaDisponibile=" + quantitaDisponibile
+				+ ", urlImg=" + urlImg + ", size=" + size + ", colore=" + colore + ", carrelli=" + carrelli
+				+ ", ordini=" + ordini + ", recensioni=" + recensioni + "]";
 	}
+
 
 	public Integer getId() {
 		return id;
@@ -124,12 +115,12 @@ public class ProdottoDTO {
 		this.prezzo = prezzo;
 	}
 
-	public Integer getQuantitaDisponibile() {
+	public Integer getQuantitàDisponibile() {
 		return quantitaDisponibile;
 	}
 
-	public void setQuantitaDisponibile(Integer quantitàDisponibile) {
-		this.quantitaDisponibile = quantitàDisponibile;
+	public void setQuantitàDisponibile(Integer quantitaDisponibile) {
+		this.quantitaDisponibile = quantitaDisponibile;
 	}
 
 	public String getUrlImg() {
@@ -155,6 +146,7 @@ public class ProdottoDTO {
 	public void setColore(String colore) {
 		this.colore = colore;
 	}
+
 
 	public List<CarrelloDTO> getCarrelli() {
 		return carrelli;

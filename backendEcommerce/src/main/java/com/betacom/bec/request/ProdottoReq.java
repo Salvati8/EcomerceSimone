@@ -1,7 +1,5 @@
 package com.betacom.bec.request;
 
-import java.sql.Timestamp;
-
 public class ProdottoReq {
 
 	private Integer id;
@@ -14,8 +12,9 @@ public class ProdottoReq {
     private String urlImg;
     private String size;
     private String colore;
+
     
-    
+
 	public ProdottoReq(Integer id, String marca, String nome, String categoria, String descrizione, Double prezzo,
 			Integer quantitaDisponibile, String urlImg, String size, String colore) {
 		super();
@@ -29,19 +28,19 @@ public class ProdottoReq {
 		this.urlImg = urlImg;
 		this.size = size;
 		this.colore = colore;
-		
 	}
 
 	public ProdottoReq() {
 		super();
 	}
 
+
+
 	@Override
 	public String toString() {
 		return "ProdottoReq [id=" + id + ", marca=" + marca + ", nome=" + nome + ", categoria=" + categoria
-				+ ", descrizione=" + descrizione + ", prezzo=" + prezzo + ", quantitàDisponibile=" + quantitaDisponibile
-				+ ", urlImg=" + urlImg + ", size=" + size + ", colore=" + colore
-				+ "]";
+				+ ", descrizione=" + descrizione + ", prezzo=" + prezzo + ", quantitaDisponibile=" + quantitaDisponibile
+				+ ", urlImg=" + urlImg + ", size=" + size + ", colore=" + colore + "]";
 	}
 
 	public Integer getId() {
@@ -92,12 +91,12 @@ public class ProdottoReq {
 		this.prezzo = prezzo;
 	}
 
-	public Integer getQuantitaDisponibile() {
+	public Integer getquantitaDisponibile() {
 		return quantitaDisponibile;
 	}
 
-	public void setQuantitàDisponibile(Integer quantitàDisponibile) {
-		this.quantitaDisponibile = quantitàDisponibile;
+	public void setquantitaDisponibile(Integer quantitaDisponibile) {
+		this.quantitaDisponibile = quantitaDisponibile;
 	}
 
 	public String getUrlImg() {
@@ -123,9 +122,6 @@ public class ProdottoReq {
 	public void setColore(String colore) {
 		this.colore = colore;
 	}
-
-	
-    
 	
     
 }

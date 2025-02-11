@@ -1,6 +1,5 @@
 package com.betacom.bec.models;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import com.betacom.bec.utils.Roles;
@@ -59,14 +58,6 @@ public class Utente {
     		nullable=false)
 	private String indirizzoDiFatturazione;
 	
-	@Column(name="data_creazione",
-			length=100,
-    		nullable=false)
-	private Timestamp dataC;
-	
-	@OneToOne
-	@JoinColumn(name = "id_carrello")
-	private Carrello carrello;
 	
 	@OneToMany(mappedBy="utente",   //colegamento con utente
  		   fetch = FetchType.EAGER,  //strategy di caricamento oggetto-> tutti oggetti sono caricati
@@ -142,21 +133,6 @@ public class Utente {
 		this.indirizzoDiFatturazione = indirizzoDiFatturazione;
 	}
 
-	public Timestamp getDataC() {
-		return dataC;
-	}
-
-	public void setDataC(Timestamp dataC) {
-		this.dataC = dataC;
-	}
-
-	public Carrello getCarrello() {
-		return carrello;
-	}
-
-	public void setCarrello(Carrello carrello) {
-		this.carrello = carrello;
-	}
 
 	public List<Ordine> getOrdini() {
 		return ordini;
@@ -182,6 +158,5 @@ public class Utente {
 		this.ruolo = ruolo;
 	}
 
-	
 	
 }

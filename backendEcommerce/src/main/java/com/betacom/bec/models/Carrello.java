@@ -1,41 +1,49 @@
 package com.betacom.bec.models;
 
-import java.sql.Timestamp;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
-@Entity //tutti i db e tabelle sono entity
-@Table (name="carrello")
+@Entity
+@Table(name="carrello")
 public class Carrello {
 
-	@Id
+    @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-	private Integer id;
-	
-	@Column(length=100,
-    		nullable=false)
-	private Integer quantita;
-	
-	@Column(length=100,
-    		nullable=false)
-	private Double prezzo;
-	
-	@OneToOne(mappedBy = "carrello",  //riferito all'attributo che in certificato
-	  		  cascade = CascadeType.REMOVE)
-	private Utente utente;
-	
-	@ManyToOne
-    @JoinColumn(name = "id_prodotto")
-    private Prodotto prodotto;
+    private Integer id;
+
+    private Integer quantita;
+    private Double prezzo;
+
+    @OneToOne
+    @JoinColumn(name = "id_utente")
+    private Utente utente;
+
+    @OneToMany(mappedBy = "carrello", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonManagedReference 
+    private List<CarrelloProdotto> carrelloProdotti;
+
+
+    public void aggiornaTotali() {
+        this.quantita = carrelloProdotti.stream()
+            .mapToInt(CarrelloProdotto::getQuantita)
+            .sum();
+
+        this.prezzo = carrelloProdotti.stream()
+            .mapToDouble(cp -> cp.getProdotto().getPrezzo() * cp.getQuantita())
+            .sum();
+    }
 
 	public Integer getId() {
 		return id;
@@ -69,15 +77,16 @@ public class Carrello {
 		this.utente = utente;
 	}
 
-	public Prodotto getProdotto() {
-		return prodotto;
+	public List<CarrelloProdotto> getCarrelloProdotti() {
+		return carrelloProdotti;
 	}
 
-	public void setProdotto(Prodotto prodotto) {
-		this.prodotto = prodotto;
+	public void setCarrelloProdotti(List<CarrelloProdotto> carrelloProdotti) {
+		this.carrelloProdotti = carrelloProdotti;
 	}
-	
-	
 
-	
+    
 }
+
+
+	

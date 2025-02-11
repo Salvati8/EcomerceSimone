@@ -24,7 +24,7 @@ public class RecensioneReq {
 
 	@Override
 	public String toString() {
-		return "RecensioneReq [id=" + id + ", valutazione="
+		return "RecensioneReq [id=" + id +  ", valutazione="
 				+ valutazione + ", commento=" + commento + ", dataRecensione=" + dataRecensione + "]";
 	}
 
@@ -35,7 +35,7 @@ public class RecensioneReq {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-
+	
 	public Integer getValutazione() {
 		return valutazione;
 	}

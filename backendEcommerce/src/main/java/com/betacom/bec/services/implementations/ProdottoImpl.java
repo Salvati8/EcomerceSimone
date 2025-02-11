@@ -1,14 +1,12 @@
 package com.betacom.bec.services.implementations;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.betacom.bec.dto.ProdottoDTO;
 import com.betacom.bec.models.Prodotto;
 import com.betacom.bec.repositories.ProdottoRepository;
@@ -20,14 +18,19 @@ import com.betacom.bec.services.interfaces.ProdottoServices;
 public class ProdottoImpl implements ProdottoServices{
 
 	@Autowired
-	private ProdottoRepository proR;
+	ProdottoRepository proR;
 	
-	@Autowired
-	private Logger log;
 	
 	@Autowired
 	private MessaggioServices msgS;
 	
+	@Autowired
+	Logger log;
+	
+	// Creazione prodotto che finirà nella pagina di tutti i prodotti
+	// pensare alla possibilità di creare un prodotto che poi verrà inserito all'interno della categoria 
+	// specifica per quel prodotto -> se creo prodotto da uomo, deve finire sulla pagina prodotti uomo 
+
 	@Override
 	public void create(ProdottoReq req) throws Exception {
 		
@@ -36,7 +39,7 @@ public class ProdottoImpl implements ProdottoServices{
 		Optional<Prodotto> c = proR.findByNome(req.getNome().trim());
 		
 		if(c.isPresent())
-			throw new Exception("Prodotto già presente");
+			throw new Exception(msgS.getMessaggio("find-prodotto"));
 		
 		if (req.getMarca() == null)
 			throw new Exception(msgS.getMessaggio("no-marca"));
@@ -48,7 +51,7 @@ public class ProdottoImpl implements ProdottoServices{
 			throw new Exception(msgS.getMessaggio("no-desc"));
 		if (req.getPrezzo() == null)
 			throw new Exception(msgS.getMessaggio("no-prezzo"));
-		if (req.getQuantitaDisponibile() == null)
+		if (req.getquantitaDisponibile() == null)
 			throw new Exception(msgS.getMessaggio("no-quantita"));
 		if (req.getUrlImg() == null)
 			throw new Exception(msgS.getMessaggio("no-img"));
@@ -64,7 +67,7 @@ public class ProdottoImpl implements ProdottoServices{
 		prodotto.setCategoria(req.getCategoria());
 		prodotto.setDescrizione(req.getDescrizione());
 		prodotto.setPrezzo(req.getPrezzo());
-		prodotto.setQuantitaDisponibile(req.getQuantitaDisponibile());
+		prodotto.setQuantitaDisponibile(req.getquantitaDisponibile());
 		prodotto.setUrlImg(req.getUrlImg());
 		prodotto.setSize(req.getSize());
 		prodotto.setColore(req.getColore());
@@ -94,7 +97,7 @@ public class ProdottoImpl implements ProdottoServices{
 
         Prodotto p = optProdotto.get();
         p.setPrezzo(req.getPrezzo());
-        p.setQuantitaDisponibile(req.getQuantitaDisponibile());
+        p.setQuantitaDisponibile(req.getquantitaDisponibile());
 
         proR.save(p);
     }
@@ -117,4 +120,7 @@ public class ProdottoImpl implements ProdottoServices{
 		proR.delete(pr.get());
 		
 	} 
+	
+
+
 }

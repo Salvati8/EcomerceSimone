@@ -8,14 +8,14 @@ import org.springframework.stereotype.Service;
 
 import com.betacom.bec.models.MessageID;
 import com.betacom.bec.models.Messaggi;
-import com.betacom.bec.repositories.MessaggiRepository;
+import com.betacom.bec.repositories.iMessaggiRepository;
 import com.betacom.bec.services.interfaces.MessaggioServices;
 
 @Service
 public class MessaggioImpl implements MessaggioServices{
 	
 	@Autowired
-	MessaggiRepository msgR;
+	iMessaggiRepository msgR;
 	
 	@Value("${lang}")
 	private String lang;

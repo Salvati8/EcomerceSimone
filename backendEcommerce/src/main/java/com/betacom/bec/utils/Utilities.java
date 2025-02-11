@@ -8,11 +8,14 @@ import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
+import com.betacom.bec.dto.CarrelloDTO;
+import com.betacom.bec.dto.CarrelloProdottoDTO;
 import com.betacom.bec.dto.OrdineDTO;
 import com.betacom.bec.dto.RecensioneDTO;
+import com.betacom.bec.models.Carrello;
+import com.betacom.bec.models.CarrelloProdotto;
 import com.betacom.bec.models.Ordine;
 import com.betacom.bec.models.Recensione;
-
 
 
 public class Utilities {
@@ -30,16 +33,23 @@ public class Utilities {
 		return formatter.format(data);
 	}
 	
-     public static List<OrdineDTO> buildOrdineDTO(List<Ordine> a){
- 		return a.stream()
- 				.map(o-> new OrdineDTO(o.getId(), o.getPrezzoTotale(), o.getIndirizzoDiSpedizione(),o.getCap(),o.getDataOrdine(),o.getQuantità(),o.getStato()))
- 				.collect(Collectors.toList());
- 	}
+     public static List<RecensioneDTO> buildRecensioneDTO(List<Recensione> a) {
+    	    return a.stream()
+    	            .map(r -> new RecensioneDTO(r.getId(), r.getValutazione(), r.getCommento(), r.getDataRecensione()))
+    	            .collect(Collectors.toList());
+    }
      
-     public static List<RecensioneDTO> buildRecensioneDTO(List<Recensione> a){
-  		return a.stream()
-  				.map(r-> new RecensioneDTO(r.getId(),r.getValutazione(),r.getCommento(),r.getDataRecensione()))
-  				.collect(Collectors.toList());
-  	}
+     public static List<OrdineDTO> buildOrdineDTO(List<Ordine> a) {
+ 	    return a.stream()
+ 	            .map(r -> new OrdineDTO(r.getId(), r.getPrezzoTotale(), r.getIndirizzoDiSpedizione(), r.getCap(), r.getDataOrdine(), r.getQuantità(), r.getStato()))
+ 	            .collect(Collectors.toList());
+ }
+     
+     public static List<CarrelloProdottoDTO> buildCarrelloProdottoDTO(List<CarrelloProdotto> a) {
+  	    return a.stream()
+  	            .map(r -> new CarrelloProdottoDTO(r.getId(),r.getProdotto()))
+  	            .collect(Collectors.toList());
+  }
+
 	
 }
