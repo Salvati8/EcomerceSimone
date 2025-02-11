@@ -73,22 +73,7 @@ public class UtenteController {
     }
 
 
-	
-	@PostMapping("/remove")
-	public ResponseBase remove(@RequestBody (required = true) UtenteReq req) {
-		log.debug("delete: " + req);
-		ResponseBase r = new ResponseBase();
-		r.setRc(true);
-		try {
-			utenteS.remove(req);
-		} catch (Exception e) {
-			r.setMsg(e.getMessage());
-			r.setRc(false);
-		}
-		return r;
-	}
-	
-	 @PostMapping("/{nomeUtente}")
+	@PostMapping("/{nomeUtente}")
 	    public ResponseEntity<String> deleteUtente(@PathVariable String nomeUtente) {
 	        try {
 	            utenteS.delete(nomeUtente);

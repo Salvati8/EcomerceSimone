@@ -117,11 +117,7 @@ public class UtenteImpl implements UtenteServices{
 		
 	}
 
-	@Override
-	public void remove(UtenteReq req) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	@Override
 	public void delete(String nomeUtente) throws Exception {

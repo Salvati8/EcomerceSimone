@@ -13,8 +13,6 @@ public interface UtenteServices {
 
 	void create(UtenteReq req) throws Exception;
 
-	void remove(UtenteReq req);
-
 	void delete(String nomeUtente) throws Exception;
 
 	void update(String nomeUtente, UtenteReq req, String ruoloRichiedente) throws Exception;
