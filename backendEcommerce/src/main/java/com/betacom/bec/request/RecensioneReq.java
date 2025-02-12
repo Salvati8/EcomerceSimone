@@ -1,16 +1,17 @@
 package com.betacom.bec.request;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class RecensioneReq {
 
 	private Integer id;
     private Integer valutazione;
     private String commento;
-    private Timestamp dataRecensione;
+    private String dataRecensione;
     
 	public RecensioneReq(Integer id, Integer valutazione, String commento,
-			Timestamp dataRecensione) {
+			String dataRecensione) {
 		super();
 		this.id = id;
 		this.valutazione = valutazione;
@@ -52,11 +53,11 @@ public class RecensioneReq {
 		this.commento = commento;
 	}
 
-	public Timestamp getDataRecensione() {
+	public String getDataRecensione() {
 		return dataRecensione;
 	}
 
-	public void setDataRecensione(Timestamp dataRecensione) {
+	public void setDataRecensione(String dataRecensione) {
 		this.dataRecensione = dataRecensione;
 	}
    

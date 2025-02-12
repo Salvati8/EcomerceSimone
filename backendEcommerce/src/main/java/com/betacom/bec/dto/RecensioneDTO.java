@@ -1,16 +1,17 @@
 package com.betacom.bec.dto;
 
 import java.sql.Timestamp;
+import java.util.Date;
 
 public class RecensioneDTO {
 
 	    private Integer id;
 	    private Integer valutazione;
 	    private String commento;
-	    private Timestamp dataRecensione;
+	    private Date dataRecensione;
 	    
 		public RecensioneDTO(Integer id, Integer valutazione, String commento,
-				Timestamp dataRecensione) {
+				Date dataRecensione) {
 			super();
 			this.id = id;
 			this.valutazione = valutazione;
@@ -52,11 +53,11 @@ public class RecensioneDTO {
 			this.commento = commento;
 		}
 
-		public Timestamp getDataRecensione() {
+		public Date getDataRecensione() {
 			return dataRecensione;
 		}
 
-		public void setDataRecensione(Timestamp dataRecensione) {
+		public void setDataRecensione(Date dataRecensione) {
 			this.dataRecensione = dataRecensione;
 		}
 

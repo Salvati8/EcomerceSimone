@@ -1,8 +1,7 @@
 package com.betacom.bec.models;
 
 import java.sql.Timestamp;
-
-
+import java.util.Date;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,7 +31,7 @@ public class Recensione {
 	@Column(name="data_recensione",
 			length=100,
     		nullable=false)
-	private Timestamp dataRecensione;
+	private Date dataRecensione;
 	
 	@ManyToOne
     @JoinColumn(name = "id_utente")
@@ -66,11 +65,11 @@ public class Recensione {
 		this.commento = commento;
 	}
 
-	public Timestamp getDataRecensione() {
+	public Date getDataRecensione() {
 		return dataRecensione;
 	}
 
-	public void setDataRecensione(Timestamp dataRecensione) {
+	public void setDataRecensione(Date dataRecensione) {
 		this.dataRecensione = dataRecensione;
 	}
 
