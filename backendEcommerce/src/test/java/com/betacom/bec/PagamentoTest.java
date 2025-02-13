@@ -37,6 +37,7 @@ public class PagamentoTest {
     @Order(1)
     public void createPagamentoTest() throws Exception {
         PagamentoReq req = new PagamentoReq();
+        req.setId(1);
         req.setMetodoDiPagamento("Carta di Credito");
         req.setNumeroCarta("1234567812345678");
         req.setDataScadenza("12/30");

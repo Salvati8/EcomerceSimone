@@ -72,6 +72,9 @@ public class RecensioneReq {
 	public void setProdotto(Prodotto prodotto) {
 		this.prodotto = prodotto;
 	}
+
+
+	
    
 	
     

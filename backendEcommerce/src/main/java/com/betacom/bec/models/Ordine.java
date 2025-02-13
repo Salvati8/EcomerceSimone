@@ -35,6 +35,13 @@ public class Ordine {
     		nullable=false)
 	private String citta;
 	
+	@ManyToOne
+	@JoinColumn(name = "id_prodotto")
+	private Prodotto prodotto;
+	
+	@ManyToOne
+	@JoinColumn(name = "id_utente")
+	private Utente utente;
 
 	@Column(name = "data_ordine", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
 	@Temporal(TemporalType.TIMESTAMP)
@@ -93,6 +100,22 @@ public class Ordine {
 
 	public void setCarrello(Carrello carrello) {
 		this.carrello = carrello;
+	}
+
+	public Prodotto getProdotto() {
+		return prodotto;
+	}
+
+	public void setProdotto(Prodotto prodotto) {
+		this.prodotto = prodotto;
+	}
+
+	public Utente getUtente() {
+		return utente;
+	}
+
+	public void setUtente(Utente utente) {
+		this.utente = utente;
 	}
 
 }

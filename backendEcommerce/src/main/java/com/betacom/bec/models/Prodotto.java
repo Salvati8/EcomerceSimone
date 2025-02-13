@@ -21,17 +21,45 @@ public class Prodotto {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
-    private Integer id;
+	private Integer id;
+	
+	@Column(length=100,
+    		nullable=false)
+	private String marca;
+	
+	@Column(length=100,
+    		nullable=false)
+	private String nome;
+	
+	@Column(length=100,
+    		nullable=false)
+	private String categoria;
+	
+	@Column(length=100,
+    		nullable=false)
+	private String descrizione;
+	
+	@Column(length=100,
+    		nullable=false)
+	private Double prezzo;
+	
+	@Column(name="quantita_disponibile",
+			length=100,
+    		nullable=false)
+	private Integer quantitaDisponibile;
+	
+	@Column(name="url_img",
+			length=100,
+    		nullable=false)
+	private String urlImg;
 
-    private String marca;
-    private String nome;
-    private String categoria;
-    private String descrizione;
-    private Double prezzo;
-    private Integer quantitaDisponibile;
-    private String urlImg;
-    private String size;
-    private String colore;
+	@Column(length=100,
+    		nullable=false)
+	private String size;
+	
+	@Column(length=100,
+    		nullable=false)
+	private String colore;
 
     @OneToMany(mappedBy = "prodotto", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore

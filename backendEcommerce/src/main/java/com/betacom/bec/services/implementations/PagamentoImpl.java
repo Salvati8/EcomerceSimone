@@ -115,7 +115,7 @@ public class PagamentoImpl implements PagamentoServices {
 	
 	@Override
     public List<Pagamento> getPagamentiByUserId(Integer userId) {
-        return pagamentoR.findByUserId(userId);  
+        return pagamentoR.findByUtente_Id(userId);  
     }
 
 

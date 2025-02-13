@@ -20,7 +20,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 	PagamentoControllerTest.class,
 	PagamentoTest.class
 })
-
+//ciao
 @SpringBootTest
 class BackendEcommerceApplicationTests {
 

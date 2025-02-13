@@ -23,39 +23,40 @@
     ) engine=InnoDB;
 
     create table ordini (
-        cap integer not null,
         id integer not null auto_increment,
+        id_carrello integer,
         id_prodotto integer,
         id_utente integer,
-        prezzo_totale float(53) not null,
-        quantità integer not null,
-        data_ordine datetime(6) not null,
+        data_ordine TIMESTAMP DEFAULT CURRENT_TIMESTAMP null,
+        cap varchar(100) not null,
+        citta varchar(100) not null,
         indirizzo_spedizione varchar(100) not null,
-        stato varchar(100) not null,
         primary key (id)
     ) engine=InnoDB;
 
     create table pagamenti (
+        cvv integer not null,
         id integer not null auto_increment,
         id_ordine integer,
+        id_utente integer,
         importo float(53) not null,
-        data_pagamento datetime(6) not null,
+        data_scadenza datetime(6) not null,
+        numero_carta varchar(19) not null,
         metodo_pagamento varchar(100) not null,
-        stato_pagamento varchar(100) not null,
         primary key (id)
     ) engine=InnoDB;
 
     create table prodotti (
         id integer not null auto_increment,
-        prezzo float(53),
-        quantita_disponibile integer,
-        categoria varchar(255),
-        colore varchar(255),
-        descrizione varchar(255),
-        marca varchar(255),
-        nome varchar(255),
-        size varchar(255),
-        url_img varchar(255),
+        prezzo float(53) not null,
+        quantita_disponibile integer not null,
+        categoria varchar(100) not null,
+        colore varchar(100) not null,
+        descrizione varchar(100) not null,
+        marca varchar(100) not null,
+        nome varchar(100) not null,
+        size varchar(100) not null,
+        url_img varchar(100) not null,
         primary key (id)
     ) engine=InnoDB;
 
@@ -101,6 +102,11 @@
        references prodotti (id);
 
     alter table ordini 
+       add constraint FK5nvsun8bktrdr3ir2cvw0ktil 
+       foreign key (id_carrello) 
+       references carrello (id);
+
+    alter table ordini 
        add constraint FKstu4ffvdir0e3p3xg8se2a4un 
        foreign key (id_prodotto) 
        references prodotti (id);
@@ -114,6 +120,11 @@
        add constraint FKb19bn6ntprd4pcu61w9fpyqin 
        foreign key (id_ordine) 
        references ordini (id);
+
+    alter table pagamenti 
+       add constraint FKkgi08br0yi2u29py759ivmeq3 
+       foreign key (id_utente) 
+       references utenti (id);
 
     alter table recensioni 
        add constraint FK5wtirys8opmifrpgxxe3lla6q 

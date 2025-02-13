@@ -47,7 +47,7 @@ public class OrdineTest {
         req.setIndirizzoDiSpedizione("Via Roma, 10");
         req.setCap("00100");
         req.setCitta("Roma");
-        req.setDataOrdine("2024-02-13");
+        req.setDataOrdine("13/02/2024");
         
         // Creazione ordine senza carrello
         ordineS.create(req);

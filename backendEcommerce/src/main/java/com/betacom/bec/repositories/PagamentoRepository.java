@@ -8,6 +8,6 @@ import com.betacom.bec.models.Pagamento;
 
 public interface PagamentoRepository extends JpaRepository<Pagamento, Integer> {
 
-	List<Pagamento> findByUserId(Integer userId);
+	List<Pagamento> findByUtente_Id(Integer utenteId);
 
 }
