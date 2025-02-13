@@ -7,19 +7,22 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @Suite
 @SelectClasses({
-	ProdottoControllerTest.class,
 	ProdottoTest.class,
-	CarrelloControllerTest.class,
 	CarrelloTest.class,
-	RecensioneControllerTest.class,
 	RecensioneTest.class,
-	UtenteControllerTest.class,
 	UtenteTest.class,
-	OrdineControllerTest.class,
 	OrdineTest.class,
-	PagamentoControllerTest.class,
-	PagamentoTest.class
+	PagamentoTest.class,
+	
+	ProdottoControllerTest.class,
+	CarrelloControllerTest.class,
+	RecensioneControllerTest.class,
+	UtenteControllerTest.class,
+	OrdineControllerTest.class,
+	PagamentoControllerTest.class
+	
 })
+
 
 @SpringBootTest
 class BackendEcommerceApplicationTests {
