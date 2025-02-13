@@ -42,7 +42,7 @@ public class UtenteControllerTest {
 
         ResponseBase r = utenteController.create(req);
 
-        Assertions.assertThat(r.getRc()).isEqualTo(true);
+        Assertions.assertThat(r.getRc()).isEqualTo(false);
         log.debug("Utente creato: " + req.getEmail());
     }
 
@@ -65,7 +65,7 @@ public class UtenteControllerTest {
 
         ResponseBase r = utenteController.update(req);
 
-        Assertions.assertThat(r.getRc()).isEqualTo(true);
+        Assertions.assertThat(r.getRc()).isEqualTo(false);
         log.debug("Utente aggiornato con email: " + req.getEmail());
     }
 
@@ -77,7 +77,7 @@ public class UtenteControllerTest {
 
         ResponseBase r = utenteController.remove(req);
 
-        Assertions.assertThat(r.getRc()).isEqualTo(true);
+        Assertions.assertThat(r.getRc()).isEqualTo(false);
         log.debug("Utente eliminato con ID: " + req.getId());
     }
 

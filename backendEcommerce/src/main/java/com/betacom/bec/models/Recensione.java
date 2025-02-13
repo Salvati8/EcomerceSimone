@@ -1,6 +1,5 @@
 package com.betacom.bec.models;
 
-import java.sql.Timestamp;
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -11,6 +10,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 
 @Entity //tutti i db e tabelle sono entity
 @Table (name="recensioni")
@@ -28,10 +29,10 @@ public class Recensione {
     		nullable=false)
 	private String commento;
 	
-	@Column(name="data_recensione",
-			length=100,
-    		nullable=false)
+	@Column(name = "data_recensione", updatable = false, columnDefinition = "TIMESTAMP DEFAULT CURRENT_TIMESTAMP")
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date dataRecensione;
+
 	
 	@ManyToOne
     @JoinColumn(name = "id_utente")

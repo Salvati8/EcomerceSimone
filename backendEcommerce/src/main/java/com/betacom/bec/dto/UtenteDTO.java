@@ -14,9 +14,8 @@ public class UtenteDTO {
 	 private String numeroTelefono;
 	 private String indirizzoDiSpedizione;
 	 private String indirizzoDiFatturazione;
-	private List<OrdineDTO> ordini;
-	private List<RecensioneDTO> recensioni;
-	 
+
+	
 	 
 	 public String getNumeroTelefono() {
 		return numeroTelefono;
@@ -52,35 +51,34 @@ public class UtenteDTO {
 			this.cognome = cognome;
 		}
 
+
+
+
 	public UtenteDTO(Integer id, String nome, String cognome, String email, String password, String ruolo,
-			String numeroTelefono, String indirizzoDiSpedizione, String indirizzoDiFatturazione, List<OrdineDTO> ordini,
-			List<RecensioneDTO> recensioni) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.cognome = cognome;
-		this.email = email;
-		this.password = password;
-		this.ruolo = ruolo;
-		this.numeroTelefono = numeroTelefono;
-		this.indirizzoDiSpedizione = indirizzoDiSpedizione;
-		this.indirizzoDiFatturazione = indirizzoDiFatturazione;
-		this.ordini = ordini;
-		this.recensioni = recensioni;
-	}
+				String numeroTelefono, String indirizzoDiSpedizione, String indirizzoDiFatturazione) {
+			super();
+			this.id = id;
+			this.nome = nome;
+			this.cognome = cognome;
+			this.email = email;
+			this.password = password;
+			this.ruolo = ruolo;
+			this.numeroTelefono = numeroTelefono;
+			this.indirizzoDiSpedizione = indirizzoDiSpedizione;
+			this.indirizzoDiFatturazione = indirizzoDiFatturazione;
+		}
 
 	public UtenteDTO() {
 		super();
 	}
 
-	 
+
 
 	@Override
 	public String toString() {
 		return "UtenteDTO [id=" + id + ", nome=" + nome + ", cognome=" + cognome + ", email=" + email + ", password="
 				+ password + ", ruolo=" + ruolo + ", numeroTelefono=" + numeroTelefono + ", indirizzoDiSpedizione="
-				+ indirizzoDiSpedizione + ", indirizzoDiFatturazione=" + indirizzoDiFatturazione + ", ordini=" + ordini
-				+ ", recensioni=" + recensioni + "]";
+				+ indirizzoDiSpedizione + ", indirizzoDiFatturazione=" + indirizzoDiFatturazione + "]";
 	}
 
 	public Integer getId() {
@@ -132,24 +130,6 @@ public class UtenteDTO {
 	}
 
 
-	public List<OrdineDTO> getOrdini() {
-		return ordini;
-	}
-
-	public void setOrdini(List<OrdineDTO> ordini) {
-		this.ordini = ordini;
-	}
-
-	public List<RecensioneDTO> getRecensioni() {
-		return recensioni;
-	}
-
-	public void setRecensioni(List<RecensioneDTO> recensioni) {
-		this.recensioni = recensioni;
-	}
-	 
-	
-	 
 	 
 
 }

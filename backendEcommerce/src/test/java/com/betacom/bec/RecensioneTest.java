@@ -42,8 +42,8 @@ public class RecensioneTest {
         req.setValutazione(5);
         req.setCommento("Ottimo prodotto!");
         req.setDataRecensione("2024-02-12");
-        req.setUtente(null); // Imposta un utente valido in base ai dati presenti nel DB
-        req.setProdotto(null); // Imposta un prodotto valido in base ai dati presenti nel DB
+       // req.setUtente(1); // Imposta un utente valido in base ai dati presenti nel DB
+       // req.setProdotto(1); // Imposta un prodotto valido in base ai dati presenti nel DB
         
         // Chiama il metodo create
         recensioneS.create(req);

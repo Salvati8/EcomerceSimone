@@ -1,5 +1,6 @@
 package com.betacom.bec.services.implementations;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -8,6 +9,9 @@ import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.betacom.bec.dto.ProdottoDTO;
+import com.betacom.bec.dto.RecensioneDTO;
+import com.betacom.bec.dto.UtenteDTO;
 import com.betacom.bec.models.Recensione;
 import com.betacom.bec.repositories.RecensioneRepository;
 import com.betacom.bec.request.RecensioneReq;
@@ -34,24 +38,31 @@ public class RecensioneImpl implements RecensioneServices{
 		
 		System.out.println("Create : " + req);
 		
-		Optional<Recensione> c = recR.findById(req.getId());
-		
-		
-		if(c.isPresent())
-			throw new Exception(msgS.getMessaggio("find-recensione"));
 		
 		if (req.getValutazione() == null)
 			throw new Exception(msgS.getMessaggio("no-valutazione"));
 		if (req.getCommento() == null)
 			throw new Exception(msgS.getMessaggio("no-commento"));
+		if (req.getUtente() == null)
+			throw new Exception(msgS.getMessaggio("no-utente"));
+		if (req.getProdotto() == null)
+			throw new Exception(msgS.getMessaggio("no-prodotto"));
 		
 		
-		Recensione rec = new Recensione();
-		
+		Recensione rec = new Recensione();		
 		
 		rec.setValutazione(req.getValutazione());
 		rec.setCommento(req.getCommento());
-		rec.setDataRecensione(convertStringToDate(req.getDataRecensione()));
+		
+	    // Imposta la data di recensione (se non presente, usa la data corrente)
+	    if (req.getDataRecensione() == null || req.getDataRecensione().isEmpty()) {
+	        rec.setDataRecensione(new Date());  // Imposta la data corrente
+	    } else {
+	        rec.setDataRecensione(convertStringToDate(req.getDataRecensione()));
+	    }
+	    
+		rec.setUtente(req.getUtente());
+		rec.setProdotto(req.getProdotto());
 		
 
       // Salva il prodotto
@@ -72,15 +83,40 @@ public class RecensioneImpl implements RecensioneServices{
 	    Recensione r = optRecensione.get();
 	    r.setValutazione(req.getValutazione());
 	    r.setCommento(req.getCommento());
-	    r.setDataRecensione(convertStringToDate(req.getDataRecensione()));
+	    
+	    
 	    
 	    recR.save(r);
 	}
 
 	@Override
-	public List<Recensione> listAllRecensioni() throws Exception {
-	    return recR.findAll();
+	public List<RecensioneDTO> listAllRecensioni() throws Exception {
+	    List<Recensione> recensioni = recR.findAll();
+
+	    return recensioni.stream().map(u -> new RecensioneDTO(
+	            u.getId(),
+	            u.getValutazione(),
+	            u.getCommento(),
+	            u.getDataRecensione(),
+	            (u.getUtente() == null) ? null : new UtenteDTO(
+	            		u.getUtente().getId(),
+	                    u.getUtente().getNome(),
+	                    u.getUtente().getCognome()
+	            ),
+	            (u.getProdotto() == null) ? null : new ProdottoDTO(
+	                    u.getProdotto().getMarca(),
+	                    u.getProdotto().getNome(),
+	                    u.getProdotto().getCategoria(),
+	                    u.getProdotto().getDescrizione(),
+	                    u.getProdotto().getPrezzo(),
+	                    u.getProdotto().getUrlImg(),
+	                    u.getProdotto().getColore()
+	            )
+	    )).collect(Collectors.toList());
 	}
+
+
+
 	
 	@Override
 	public void removeRecensione(RecensioneReq req) throws Exception {
@@ -91,4 +127,31 @@ public class RecensioneImpl implements RecensioneServices{
 	    
 	    recR.delete(rec.get());
 	} 
+	
+	@Override
+	public List<RecensioneDTO> listByProdotto(Integer idProdotto) {
+	    List<Recensione> recensioni = recR.findByProdottoId(idProdotto);
+
+	    return recensioni.stream().map(u -> new RecensioneDTO(
+	            u.getId(),
+	            u.getValutazione(),
+	            u.getCommento(),
+	            u.getDataRecensione(),
+	            (u.getUtente() == null) ? null : new UtenteDTO(
+	            		u.getUtente().getId(),
+	                    u.getUtente().getNome(),
+	                    u.getUtente().getCognome()
+	            ),
+	            (u.getProdotto() == null) ? null : new ProdottoDTO(
+	                    u.getProdotto().getMarca(),
+	                    u.getProdotto().getNome(),
+	                    u.getProdotto().getCategoria(),
+	                    u.getProdotto().getDescrizione(),
+	                    u.getProdotto().getPrezzo(),
+	                    u.getProdotto().getUrlImg(),
+	                    u.getProdotto().getColore()
+	            )
+	    )).collect(Collectors.toList());
+	}
+
 }

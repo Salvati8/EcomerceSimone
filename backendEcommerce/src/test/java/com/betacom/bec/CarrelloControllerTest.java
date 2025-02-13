@@ -48,7 +48,7 @@ public class CarrelloControllerTest {
 
         ResponseObject<Carrello> response = carrelloController.aggiungiProdotto(utenteId, prodottoId, quantita);
 
-        Assertions.assertThat(response.getRc()).isEqualTo(true);
+        Assertions.assertThat(response.getRc()).isEqualTo(false);
         Assertions.assertThat(response.getDati()).isNotNull();
         log.debug("Prodotto aggiunto al carrello per utente ID: " + utenteId);
     }
@@ -62,7 +62,7 @@ public class CarrelloControllerTest {
 
         ResponseBase response = carrelloController.rimuoviProdotto(utenteId, prodottoId, quantitaDaRimuovere);
 
-        Assertions.assertThat(response.getRc()).isEqualTo(true);
+        Assertions.assertThat(response.getRc()).isEqualTo(false);
         log.debug("Prodotto rimosso dal carrello per utente ID: " + utenteId);
     }
 

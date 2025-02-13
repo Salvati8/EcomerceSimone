@@ -14,7 +14,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 	RecensioneControllerTest.class,
 	RecensioneTest.class,
 	UtenteControllerTest.class,
-	UtenteTest.class
+	UtenteTest.class,
+	OrdineControllerTest.class,
+	OrdineTest.class,
+	PagamentoControllerTest.class,
+	PagamentoTest.class
 })
 
 @SpringBootTest

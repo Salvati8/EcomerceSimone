@@ -14,6 +14,10 @@ public interface ProdottoServices {
 	List<ProdottoDTO> listByCategoria(String categoria);
 
 	void removeProdotto(ProdottoReq req) throws Exception;
+
+	List<ProdottoDTO> listProdotti();
+
+	ProdottoDTO findById(int i);
 	
 
 }
